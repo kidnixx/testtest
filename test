@@ -1,0 +1,14 @@
+- name: Create multiple labels
+  hosts: localhost
+  tasks:
+    - name: Add labels
+      uri:
+        url: "https://dell-r530-46.gsslab.pnq2.redhat.com/api/v2/labels/"
+        method: POST
+        user: "admin"
+        password: "RedHat1!"
+        body_format: json
+        body:
+          name: "label{{ item }}"
+        force_basic_auth: yes
+      loop: "{{ range(1, 41) | list }}"
