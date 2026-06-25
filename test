@@ -1,14 +1,16 @@
-- name: Create multiple labels
+- name: Test VMware inventory source via role
   hosts: localhost
+  gather_facts: false
   tasks:
-    - name: Add labels
-      uri:
-        url: "https://dell-r530-46.gsslab.pnq2.redhat.com/api/v2/labels/"
-        method: POST
-        user: "admin"
-        password: "RedHat1!"
-        body_format: json
-        body:
-          name: "label{{ item }}"
-        force_basic_auth: yes
-      loop: "{{ range(1, 41) | list }}"
+    - name: Create or update controller inventory sources
+      ansible.builtin.include_role:
+        name: infra.aap_configuration.controller_inventory_sources
+      vars:
+        controller_inventory_sources:
+          - name: "Atlanta VMware vCenter"
+            inventory: "VMware ATL ALL"
+            organization: "Default"
+            source: "vmware"
+            credential: "vmWare Ansible"
+            source_vars:
+              plugin: vmware.vmware.vms
