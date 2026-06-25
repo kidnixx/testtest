@@ -1,0 +1,16 @@
+- name: Test VMware inventory source via role
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create or update controller inventory sources
+      ansible.builtin.include_role:
+        name: infra.aap_configuration.controller_inventory_sources
+      vars:
+        controller_inventory_sources:
+          - name: "Atlanta VMware vCenter"
+            inventory: "VMware ATL ALL"
+            organization: "Default"
+            source: "vmware"
+            credential: "vmWare Ansible"
+            source_vars:
+              plugin: vmware.vmware.vms
